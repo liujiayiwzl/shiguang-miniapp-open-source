@@ -1,0 +1,110 @@
+<view class="page-root">
+  <scroll-view
+    class="page-scroll"
+    scroll-y
+    enable-back-to-top
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <view class="page" style="padding-bottom: {{pageBottom}}px;">
+      <view class="nav" style="padding-top: {{navTop}}px;">
+        <view class="nav-back" hover-class="tap-hover" hover-stay-time="80" bindtap="goBack">
+          <text class="nav-arrow">‹</text>
+          <text class="nav-label">返回</text>
+        </view>
+        <text class="nav-count">{{countLabel}}</text>
+      </view>
+
+      <view class="header">
+        <text class="brand">收藏</text>
+        <text class="tagline">把喜欢的句子留在这里。</text>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="skeleton-list" wx:if="{{status === 'loading'}}">
+        <view class="skeleton-card" wx:for="{{[1, 2, 3]}}" wx:key="*this">
+          <view class="sk-line sk-sm"></view>
+          <view class="sk-line sk-lg"></view>
+          <view class="sk-line sk-md"></view>
+        </view>
+        <text class="state-tip">正在取回你的收藏…</text>
+      </view>
+
+      <!-- 加载失败 -->
+      <view class="state-box" wx:elif="{{status === 'error'}}">
+        <text class="state-glyph">✦</text>
+        <text class="state-title">收藏没能加载出来</text>
+        <text class="state-desc">{{errorMessage}}</text>
+        <button class="state-button" hover-class="button-hover" bindtap="loadFavorites"><text class="state-button-text">重新加载</text></button>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="state-box" wx:elif="{{status === 'empty'}}">
+        <text class="state-glyph">❀</text>
+        <text class="state-title">还没有收藏</text>
+        <text class="state-desc">在首页遇到喜欢的句子，点一下「收藏」，它就会出现在这里。</text>
+        <button class="state-button" hover-class="button-hover" bindtap="goHome"><text class="state-button-text">去首页看看</text></button>
+      </view>
+
+      <!-- 收藏列表 -->
+      <view class="list" wx:else>
+        <view
+          class="fav-card"
+          wx:for="{{favorites}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          hover-class="fav-hover"
+          hover-stay-time="80"
+          bindtap="openDetail"
+        >
+          <view class="fav-top">
+            <view class="fav-theme">
+              <text>{{item.theme}}</text>
+            </view>
+            <text class="fav-date">{{item.dateLabel}}</text>
+          </view>
+          <text class="fav-text {{item.sizeClass}}">{{item.text}}</text>
+          <view class="fav-bottom">
+            <text class="fav-en" wx:if="{{item.english}}">{{item.english}}</text>
+            <text class="fav-en" wx:else>暂无英文表达</text>
+            <text class="fav-more">查看 ›</text>
+          </view>
+        </view>
+
+        <text class="footnote" wx:if="{{isMock}}">演示数据 · 接入 favoritesApi 后自动显示真实收藏</text>
+      </view>
+
+      <!-- 卡片详情 -->
+      <view class="mask" wx:if="{{detail}}" bindtap="closeDetail"></view>
+      <view class="sheet" wx:if="{{detail}}" style="padding-bottom: {{pageBottom}}px;" bindtap="stopTap">
+        <view class="sheet-handle"></view>
+
+        <view class="sheet-top">
+          <view class="sheet-theme">
+            <text>{{detail.theme}}</text>
+          </view>
+          <text class="sheet-date">{{detail.dateLabel}}</text>
+        </view>
+
+        <text class="sheet-text">{{detail.text}}</text>
+
+        <view class="sheet-en">
+          <text class="sheet-en-main">{{detail.english || '暂无英文表达'}}</text>
+          <text class="sheet-en-sub" wx:if="{{detail.translation}}">{{detail.translation}}</text>
+        </view>
+
+        <view class="sheet-actions">
+          <button class="sheet-button ghost" hover-class="button-hover" bindtap="closeDetail"><text class="sheet-button-text">关闭</text></button>
+          <button
+            class="sheet-button danger {{removingId === detail.id ? 'is-disabled' : ''}}"
+            hover-class="button-hover"
+            data-id="{{detail.id}}"
+            disabled="{{removingId === detail.id}}"
+            bindtap="handleRemove"
+          ><text class="sheet-button-text is-danger {{removingId === detail.id ? 'is-muted' : ''}}">{{removingId === detail.id ? '处理中…' : '取消收藏'}}</text></button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

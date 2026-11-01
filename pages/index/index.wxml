@@ -1,0 +1,160 @@
+<view class="page-root">
+  <scroll-view class="page-scroll" scroll-y enable-back-to-top scroll-into-view="{{scrollTarget}}">
+<view class="page" style="padding-top: {{navTop}}px; padding-bottom: {{pageBottom}}px;">
+  <view class="header" id="page-top">
+    <view class="header-left">
+      <view class="brand-row">
+        <text class="brand">拾光</text>
+        <text class="brand-spark">✦</text>
+      </view>
+      <text class="tagline">每天一点灵感，一点生活。</text>
+    </view>
+    <view class="header-action" hover-class="tap-hover" hover-stay-time="80" bindtap="goFavorites">收藏 ›</view>
+  </view>
+
+  <!-- 卡面：页面主角，放在最上方 -->
+  <view class="card {{generating ? 'is-generating' : ''}}">
+    <view class="card-top">
+      <text>DAILY INSPIRATION</text>
+      <text wx:if="{{generating}}">{{lastMode === 'library' ? '抽取中…' : 'AI 创作中…'}}</text>
+      <text wx:elif="{{cardStatus === 'loading'}}">加载中…</text>
+      <text wx:else>✦</text>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="card-center" wx:if="{{cardStatus === 'loading'}}">
+      <view class="card-skeleton skeleton-lg"></view>
+      <view class="card-skeleton skeleton-md"></view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="card-center" wx:elif="{{cardStatus === 'empty'}}">
+      <text class="card-flower">❀</text>
+      <text class="card-text is-long">还没有卡片</text>
+      <text class="card-hint">在下方选择抽卡或 AI 创作</text>
+    </view>
+
+    <!-- 加载失败 -->
+    <view class="card-center" wx:elif="{{cardStatus === 'error'}}">
+      <text class="card-flower">✦</text>
+      <text class="card-text is-long">{{cardError}}</text>
+      <view class="card-retry" hover-class="tap-hover" hover-stay-time="80" bindtap="retryPublicCard">点此重试</view>
+    </view>
+
+    <!-- 正常展示 -->
+    <view class="card-center" wx:else>
+      <text class="card-flower">❀</text>
+      <text class="card-text {{textSizeClass}}">{{card.text}}</text>
+    </view>
+
+    <view class="card-tags" wx:if="{{card.tags.length}}">
+      <view class="card-tag" wx:for="{{card.tags}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="card-bottom">
+      <text>{{dateLabel}}</text>
+      <text>拾光 · {{card.theme || '随心'}}</text>
+    </view>
+  </view>
+
+  <!-- 卡片工具行：换一张 / 英语展开 -->
+  <view class="card-tools" wx:if="{{cardStatus !== 'loading'}}">
+    <view
+      class="card-tool"
+      hover-class="tap-hover"
+      hover-stay-time="80"
+      bindtap="regenerate"
+    ><text>{{generating ? '请稍候…' : '从卡片库再抽一张'}}</text></view>
+    <text class="card-tool-dot" wx:if="{{cardStatus === 'ready' && card.english}}">·</text>
+    <view
+      class="card-tool"
+      wx:if="{{cardStatus === 'ready' && card.english}}"
+      hover-class="tap-hover"
+      hover-stay-time="80"
+      bindtap="toggleEnglish"
+    ><text>{{showEnglish ? '收起英语表达 ▲' : '看看英语怎么说 ▼'}}</text></view>
+  </view>
+
+  <view class="english-panel" wx:if="{{showEnglish && cardStatus === 'ready'}}">
+    <text class="english-main">{{card.english}}</text>
+    <text class="english-sub">{{card.translation}}</text>
+  </view>
+
+  <view class="actions">
+    <button
+      class="action-button {{isFavorited ? 'is-active' : ''}} {{(!canFavorite || savingFavorite) ? 'is-disabled' : ''}}"
+      hover-class="action-hover"
+      hover-stay-time="80"
+      bindtap="toggleFavorite"
+      disabled="{{!canFavorite || savingFavorite}}"
+    ><text class="action-text {{isFavorited ? 'is-on' : ''}} {{(!canFavorite || savingFavorite) ? 'is-muted' : ''}}">{{savingFavorite ? '处理中…' : (isFavorited ? '已收藏' : '收藏')}}</text></button>
+    <button
+      class="action-button {{canShare ? '' : 'is-disabled'}}"
+      hover-class="action-hover"
+      hover-stay-time="80"
+      open-type="share"
+      disabled="{{!canShare}}"
+    ><text class="action-text {{canShare ? '' : 'is-muted'}}">分享</text></button>
+  </view>
+
+  <text class="footnote">{{isAiCard ? 'AI 卡片 · 可收藏，也可分享给好友' : (cardStatus === 'ready' ? '卡片库 · 可收藏与分享' : '拾光 · 每天一点灵感')}}</text>
+
+  <!-- 创作区：想让 AI 写什么，放在卡面下方 -->
+  <view class="create-section">
+    <view class="section-title">今天想收获什么？</view>
+    <text class="mode-hint">卡片库不限次数 · AI 创作每天最多 20 次</text>
+
+    <view class="field">
+      <input
+        class="field-input"
+        value="{{themeInput}}"
+        maxlength="30"
+        placeholder="输入主题，如宇宙、友情、历史"
+        placeholder-class="field-placeholder"
+        bindinput="onThemeInput"
+      />
+      <view
+        class="theme-random-button"
+        hover-class="theme-random-hover"
+        hover-stay-time="80"
+        role="button"
+        aria-label="随机选择主题"
+        bindtap="randomizeTheme"
+      ><text>随机</text></view>
+    </view>
+
+    <view class="create-actions">
+      <button
+        class="library-button {{generating ? 'is-disabled' : ''}}"
+        hover-class="surprise-hover"
+        hover-stay-time="80"
+        bindtap="drawLibraryCard"
+        disabled="{{generating}}"
+      ><text class="library-button-text">{{generating && lastMode === 'library' ? '抽取中…' : '从卡片库抽取'}}</text></button>
+      <button
+        class="ai-button {{generating ? 'is-disabled' : ''}}"
+        hover-class="ai-hover"
+        hover-stay-time="80"
+        bindtap="generate"
+        disabled="{{generating}}"
+      ><text class="ai-button-text">{{generating && lastMode === 'ai' ? '创作中…' : '✨ AI 创作'}}</text></button>
+    </view>
+
+    <checkbox-group bindchange="onLibraryOptInChange" class="library-consent">
+      <label><checkbox value="yes" checked="{{libraryOptIn}}" color="#4f6c60"/>匿名分享作品到公共卡片库</label>
+    </checkbox-group>
+
+    <view
+      class="generate-error"
+      wx:if="{{generateError}}"
+      hover-class="tap-hover"
+      hover-stay-time="80"
+      bindtap="retryGenerate"
+    >
+      <text>{{generateError}}，点此重试</text>
+    </view>
+  </view>
+</view>
+  </scroll-view>
+  <tab-bar active="home" />
+</view>

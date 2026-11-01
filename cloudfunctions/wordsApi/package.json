@@ -1,0 +1,14 @@
+{
+  "name": "wordsApi",
+  "version": "1.0.0",
+  "description": "单词模块云端数据：词库、学习进度、每日目标、学习记录、打卡记录",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

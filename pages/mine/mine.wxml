@@ -1,0 +1,48 @@
+<view class="page-root">
+  <scroll-view class="page-scroll" scroll-y enable-back-to-top>
+    <view class="page" style="padding-top: {{navTop}}px; padding-bottom: {{pageBottom}}px;">
+      <view class="header">
+        <text class="brand">我的</text>
+        <text class="tagline">拾光 · 记录每一天。</text>
+      </view>
+
+      <!-- 学习数据 -->
+      <view class="stats-card">
+        <view class="stats-top">
+          <text class="stats-title">学习数据</text>
+          <view class="stats-badge">
+            <text>今日 {{today.learned}} / {{today.goal}} 词</text>
+          </view>
+        </view>
+
+        <view class="stats-row">
+          <view class="stats-cell">
+            <text class="stats-num">{{streak}}</text>
+            <text class="stats-label">连续打卡</text>
+          </view>
+          <view class="stats-cell">
+            <text class="stats-num">{{totals.learned}}</text>
+            <text class="stats-label">累计学词</text>
+          </view>
+          <view class="stats-cell">
+            <text class="stats-num">{{totals.accuracy}}%</text>
+            <text class="stats-label">正确率</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 入口 -->
+      <view class="entry-list">
+        <view class="entry" hover-class="entry-hover" hover-stay-time="80" bindtap="goFavorites">
+          <text class="entry-label">我的收藏</text>
+          <text class="entry-go">›</text>
+        </view>
+      </view>
+
+      <text class="footnote" wx:if="{{cloudEnabled}}">学习数据已同步到云端</text>
+      <text class="footnote" wx:else>学习数据存在本机</text>
+    </view>
+  </scroll-view>
+
+  <tab-bar active="mine" />
+</view>

@@ -1,0 +1,459 @@
+page {
+  background: #fbfaf7;
+  color: #433f38;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Skyline 没有全局滚动，页面内容都放在 scroll-view 里 */
+.page-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.page {
+  box-sizing: border-box;
+  padding: 46rpx 36rpx 60rpx;
+}
+
+.header {
+  margin-bottom: 30rpx;
+}
+
+.brand {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 650;
+  letter-spacing: 4rpx;
+}
+
+.tagline {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #92887c;
+}
+
+.tap-hover {
+  opacity: 0.66;
+}
+
+/* 加载骨架 */
+.skeleton-card {
+  padding: 34rpx 32rpx;
+  background: #f4efe7;
+  border-radius: 30rpx;
+}
+
+.sk-line {
+  height: 24rpx;
+  border-radius: 12rpx;
+  background: #e7dfd2;
+  margin-bottom: 18rpx;
+}
+
+.sk-sm {
+  width: 28%;
+}
+
+.sk-md {
+  width: 52%;
+  height: 20rpx;
+}
+
+.sk-lg {
+  width: 82%;
+  height: 40rpx;
+}
+
+/* 今日进度 */
+.today-card {
+  padding: 30rpx 32rpx;
+  background: #f2e9db;
+  border-radius: 30rpx;
+  box-shadow: 0 12rpx 36rpx rgba(75, 57, 38, 0.06);
+}
+
+.today-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.today-title-row {
+  display: flex;
+  align-items: center;
+}
+
+.today-title {
+  font-size: 23rpx;
+  letter-spacing: 1rpx;
+  color: #9a876e;
+}
+
+.today-edit {
+  margin-left: 12rpx;
+  padding: 4rpx 14rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
+  color: #617c70;
+  border: 1rpx solid #cfd9d2;
+  border-radius: 999rpx;
+}
+
+.today-badge {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 20rpx;
+  color: #a2907a;
+}
+
+.today-badge.is-on {
+  background: #4f6c60;
+  color: #ffffff;
+}
+
+.today-num-row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 20rpx;
+}
+
+.today-num {
+  font-size: 62rpx;
+  font-weight: 650;
+  line-height: 1.1;
+  color: #5a4d3f;
+}
+
+.today-total {
+  margin-left: 10rpx;
+  font-size: 24rpx;
+  color: #8a7458;
+}
+
+.today-rest {
+  flex: 1;
+  min-width: 0;
+  margin-left: 16rpx;
+  text-align: right;
+  font-size: 21rpx;
+  color: #a2907a;
+}
+
+.bar {
+  height: 12rpx;
+  margin-top: 22rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.75);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 12rpx;
+  border-radius: 999rpx;
+  background: #4f6c60;
+}
+
+.today-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+
+.today-foot-item {
+  font-size: 20rpx;
+  color: #8a7458;
+}
+
+/* 词库 */
+.section-title {
+  margin: 40rpx 0 20rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #4c4136;
+}
+
+.bank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.bank-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26rpx 30rpx;
+  background: #f6f2ea;
+  border-radius: 22rpx;
+}
+
+.bank-card.bank-hover {
+  background: #efe8dc;
+}
+
+.bank-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.bank-name {
+  display: block;
+  font-size: 29rpx;
+  font-weight: 600;
+  color: #4c4136;
+}
+
+.bank-desc {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 21rpx;
+  color: #92887c;
+}
+
+.bank-go {
+  flex: none;
+  margin-left: 18rpx;
+  font-size: 22rpx;
+  color: #617c70;
+}
+
+/* 月历 */
+.calendar {
+  margin-top: 36rpx;
+  padding: 26rpx 24rpx 20rpx;
+  background: #f6f2ea;
+  border-radius: 26rpx;
+}
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6rpx 18rpx;
+}
+
+.cal-nav {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  color: #617c70;
+}
+
+.cal-nav.is-disabled {
+  color: #cfc8bf;
+}
+
+.cal-month {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #4c4136;
+}
+
+.cal-week {
+  display: flex;
+  padding-bottom: 12rpx;
+}
+
+.cal-weekday {
+  flex: 1;
+  text-align: center;
+  font-size: 20rpx;
+  color: #a89e92;
+}
+
+.cal-row {
+  display: flex;
+}
+
+.cal-cell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 0;
+}
+
+.cal-day {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+}
+
+.cal-day-text {
+  font-size: 22rpx;
+  color: #8d8377;
+}
+
+.cal-day.is-checked {
+  background: #4f6c60;
+}
+
+.cal-day-text.is-on {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.cal-day.is-today {
+  background: #ece7de;
+}
+
+.cal-day.is-checked.is-today {
+  background: #3f5a4f;
+}
+
+/* 最近记录 */
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.record {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 28rpx;
+  background: #f6f2ea;
+  border-radius: 20rpx;
+}
+
+.record-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.record-date {
+  display: block;
+  font-size: 26rpx;
+  color: #4c4136;
+}
+
+.record-weekday {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #a89e92;
+}
+
+.record-right {
+  flex: none;
+  margin-left: 18rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.record-num {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #5a4d3f;
+}
+
+.record-acc {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #8a7458;
+}
+
+/* 空状态 */
+.empty-box {
+  padding: 46rpx 40rpx;
+  background: #f6f2ea;
+  border-radius: 22rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-title {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #5a4d3f;
+}
+
+.empty-desc {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: #92887c;
+  text-align: center;
+}
+
+.state-box {
+  padding: 60rpx 40rpx;
+  background: #f6f2ea;
+  border-radius: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.state-glyph {
+  font-size: 52rpx;
+  color: #c0ab8e;
+  margin-bottom: 22rpx;
+}
+
+.state-title {
+  font-size: 29rpx;
+  font-weight: 600;
+  color: #5a4d3f;
+}
+
+.state-desc {
+  margin-top: 14rpx;
+  font-size: 23rpx;
+  line-height: 1.65;
+  color: #92887c;
+  text-align: center;
+}
+
+.state-button {
+  margin-top: 32rpx;
+  padding: 0 44rpx;
+  height: 76rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background-color: #4f6c60;
+}
+
+.state-button::after {
+  border: none;
+}
+
+.state-button.button-hover {
+  background-color: #45604f;
+}
+
+.state-button-text {
+  font-size: 26rpx;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.footnote {
+  display: block;
+  margin-top: 26rpx;
+  text-align: center;
+  font-size: 21rpx;
+  color: #b1aaa1;
+}

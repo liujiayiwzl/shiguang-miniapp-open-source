@@ -1,0 +1,34 @@
+<view class="tabbar" style="padding-bottom: {{bottomInset}}px;">
+  <view
+    class="tab {{active === 'home' ? 'is-on' : ''}}"
+    data-key="home"
+    hover-class="tab-hover"
+    hover-stay-time="80"
+    bindtap="onTap"
+  >
+    <text class="tab-label {{active === 'home' ? 'is-on' : ''}}">首页</text>
+    <view class="tab-dot {{active === 'home' ? 'is-show' : ''}}"></view>
+  </view>
+
+  <view
+    class="tab {{active === 'checkin' ? 'is-on' : ''}}"
+    data-key="checkin"
+    hover-class="tab-hover"
+    hover-stay-time="80"
+    bindtap="onTap"
+  >
+    <text class="tab-label {{active === 'checkin' ? 'is-on' : ''}}">打卡</text>
+    <view class="tab-dot {{active === 'checkin' ? 'is-show' : ''}}"></view>
+  </view>
+
+  <view
+    class="tab {{active === 'mine' ? 'is-on' : ''}}"
+    data-key="mine"
+    hover-class="tab-hover"
+    hover-stay-time="80"
+    bindtap="onTap"
+  >
+    <text class="tab-label {{active === 'mine' ? 'is-on' : ''}}">我的</text>
+    <view class="tab-dot {{active === 'mine' ? 'is-show' : ''}}"></view>
+  </view>
+</view>

@@ -1,0 +1,135 @@
+<view class="page-root">
+  <scroll-view class="page-scroll" scroll-y enable-back-to-top>
+    <view class="page" style="padding-top: {{navTop}}px; padding-bottom: {{pageBottom}}px;">
+      <view class="header">
+        <text class="brand">打卡</text>
+        <text class="tagline">每天 {{goal}} 词，坚持的每一天都算数。</text>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="skeleton-card" wx:if="{{status === 'loading'}}">
+        <view class="sk-line sk-sm"></view>
+        <view class="sk-line sk-lg"></view>
+        <view class="sk-line sk-md"></view>
+      </view>
+
+      <!-- 加载失败 -->
+      <view class="state-box" wx:elif="{{status === 'error'}}">
+        <text class="state-glyph">✦</text>
+        <text class="state-title">打卡数据没能加载出来</text>
+        <text class="state-desc">{{errorMessage}}</text>
+        <button class="state-button" hover-class="button-hover" bindtap="retry">
+          <text class="state-button-text">重新加载</text>
+        </button>
+      </view>
+
+      <view wx:else>
+        <!-- 今日进度 -->
+        <view class="today-card">
+      <view class="today-top">
+        <view class="today-title-row" hover-class="tap-hover" hover-stay-time="80" bindtap="changeGoal">
+          <text class="today-title">今日目标</text>
+          <text class="today-edit">调整</text>
+        </view>
+        <view class="today-badge {{today.checked ? 'is-on' : ''}}">
+          <text>{{today.checked ? '已打卡' : '未打卡'}}</text>
+        </view>
+      </view>
+
+          <view class="today-num-row">
+            <text class="today-num">{{today.learned}}</text>
+            <text class="today-total">/ {{today.goal}} 词</text>
+            <text class="today-rest">{{today.restLabel}}</text>
+          </view>
+
+          <view class="bar">
+            <view class="bar-fill" style="width: {{today.percent}}%"></view>
+          </view>
+
+          <view class="today-foot">
+            <text class="today-foot-item">正确率 {{today.accuracy}}%</text>
+            <text class="today-foot-item">连续 {{streak}} 天</text>
+            <text class="today-foot-item">累计 {{totals.learned}} 词</text>
+          </view>
+        </view>
+
+        <!-- 词库：在打卡页直接开始背单词 -->
+        <view class="section-title">选择词库开始背</view>
+
+        <view class="bank-list" wx:if="{{banks.length}}">
+          <view
+            class="bank-card"
+            wx:for="{{banks}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            hover-class="bank-hover"
+            hover-stay-time="80"
+            bindtap="openBank"
+          >
+            <view class="bank-left">
+              <text class="bank-name">{{item.name}}</text>
+              <text class="bank-desc">{{item.desc}} · 已收录 {{item.total}} 词</text>
+            </view>
+            <text class="bank-go">去背 ›</text>
+          </view>
+        </view>
+
+        <view class="empty-box" wx:else>
+          <text class="empty-title">词库还在准备中</text>
+          <text class="empty-desc">稍后再来看看，或者先在上面看看今日进度。</text>
+        </view>
+
+        <!-- 月历 -->
+        <view class="calendar">
+          <view class="cal-head">
+            <view class="cal-nav" data-delta="-1" hover-class="tap-hover" hover-stay-time="80" bindtap="shiftMonth">
+              <text>‹</text>
+            </view>
+            <text class="cal-month">{{monthLabel}}</text>
+            <view class="cal-nav {{canGoNext ? '' : 'is-disabled'}}" data-delta="1" hover-class="tap-hover" hover-stay-time="80" bindtap="shiftMonth">
+              <text>›</text>
+            </view>
+          </view>
+
+          <view class="cal-week">
+            <text class="cal-weekday" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+          </view>
+
+          <view class="cal-row" wx:for="{{weeks}}" wx:key="key" wx:for-item="week">
+            <view class="cal-cell" wx:for="{{week.days}}" wx:key="key" wx:for-item="day">
+              <view class="cal-day {{day.checked ? 'is-checked' : ''}} {{day.isToday ? 'is-today' : ''}}">
+                <text class="cal-day-text {{day.checked ? 'is-on' : ''}}">{{day.day}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 最近记录 -->
+        <view class="section-title">最近记录</view>
+
+        <view class="record-list" wx:if="{{hasRecords}}">
+          <view class="record" wx:for="{{records}}" wx:key="dateKey">
+            <view class="record-left">
+              <text class="record-date">{{item.label}}</text>
+              <text class="record-weekday">{{item.weekday}}</text>
+            </view>
+            <view class="record-right">
+              <text class="record-num">{{item.learned}} 词</text>
+              <text class="record-acc">正确率 {{item.accuracy}}%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="empty-box" wx:else>
+          <text class="empty-title">还没有学习记录</text>
+          <text class="empty-desc">选一个词库开始背，今天就能点亮第一个格子。</text>
+        </view>
+
+        <text class="footnote">每日学满 {{goal}} 词记为一次打卡</text>
+        <text class="footnote">本地词库 · 共 {{importedTotal}} 词</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <tab-bar active="checkin" />
+</view>

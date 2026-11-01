@@ -1,0 +1,206 @@
+<view class="page-root">
+  <scroll-view class="page-scroll" scroll-y enable-back-to-top>
+    <view class="page" style="padding-bottom: {{pageBottom}}px;">
+      <view class="nav" style="padding-top: {{navTop}}px;">
+        <view class="nav-back" hover-class="tap-hover" hover-stay-time="80" bindtap="goBack">
+          <text class="nav-arrow">‹</text>
+          <text class="nav-label">返回</text>
+        </view>
+        <text class="nav-count">{{bankName}}词库</text>
+      </view>
+
+      <!-- 进度 -->
+      <view class="progress-row" wx:if="{{status === 'ready' && !finished}}">
+        <view class="bar">
+          <view class="bar-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+        <text class="progress-label">{{progressLabel}}</text>
+      </view>
+
+      <!-- 模式切换 -->
+      <view class="mode-switch" wx:if="{{status === 'ready' && !finished}}">
+        <view class="mode-item {{mode === 'card' ? 'is-on' : ''}}" data-mode="card" hover-class="mode-hover" hover-stay-time="80" bindtap="switchMode">
+          <text>翻卡背词</text>
+        </view>
+        <view class="mode-item {{mode === 'quiz' ? 'is-on' : ''}}" data-mode="quiz" hover-class="mode-hover" hover-stay-time="80" bindtap="switchMode">
+          <text>四选一</text>
+        </view>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="skeleton-card" wx:if="{{status === 'loading'}}">
+        <view class="sk-line sk-sm"></view>
+        <view class="sk-line sk-lg"></view>
+        <view class="sk-line sk-md"></view>
+      </view>
+
+      <!-- 加载失败 -->
+      <view class="state-box" wx:elif="{{status === 'error'}}">
+        <text class="state-glyph">✦</text>
+        <text class="state-title">单词没能加载出来</text>
+        <text class="state-desc">{{errorMessage}}</text>
+        <button class="state-button" hover-class="button-hover" bindtap="loadWords">
+          <text class="state-button-text">重新加载</text>
+        </button>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="state-box" wx:elif="{{status === 'empty'}}">
+        <text class="state-glyph">❀</text>
+        <text class="state-title">这个词库还没有单词</text>
+        <text class="state-desc">换一个词库试试。</text>
+        <button class="state-button" hover-class="button-hover" bindtap="goBack">
+          <text class="state-button-text">返回词库</text>
+        </button>
+      </view>
+
+      <!-- 本轮结束 -->
+      <view class="result-box" wx:elif="{{finished}}">
+        <text class="result-glyph">❀</text>
+        <text class="result-title">本轮完成</text>
+        <text class="result-desc">一共 {{total}} 个词，答对 {{correctCount}} 个。</text>
+
+        <view class="result-row">
+          <view class="result-cell">
+            <text class="result-num">{{correctCount}}</text>
+            <text class="result-label">答对</text>
+          </view>
+          <view class="result-cell">
+            <text class="result-num">{{total}}</text>
+            <text class="result-label">总词数</text>
+          </view>
+          <view class="result-cell">
+            <text class="result-num">{{resultAccuracy}}%</text>
+            <text class="result-label">正确率</text>
+          </view>
+        </view>
+
+        <view class="result-actions">
+          <button class="result-button ghost" hover-class="ghost-hover" bindtap="goBack">
+            <text class="ghost-text">返回词库</text>
+          </button>
+          <button class="result-button primary" hover-class="primary-hover" bindtap="restart">
+            <text class="primary-text">再来一轮</text>
+          </button>
+        </view>
+      </view>
+
+      <!-- 翻卡背词 -->
+      <block wx:elif="{{mode === 'card'}}">
+        <view class="card" hover-class="card-hover" hover-stay-time="80" bindtap="toggleCard">
+          <view class="card-top">
+            <text class="card-tag">{{bankName}}</text>
+            <text class="card-count">{{progressLabel}}</text>
+          </view>
+
+          <view class="card-center">
+            <text class="word">{{current.word}}</text>
+
+            <view class="phonetic-row">
+              <view
+                class="phonetic-item"
+                hover-class="phonetic-hover"
+                hover-stay-time="80"
+                data-accent="uk"
+                catchtap="playAudio"
+              >
+                <text class="phonetic-tag">英</text>
+                <text class="phonetic-text">{{current.phoneticUk}}</text>
+              </view>
+              <view
+                class="phonetic-item"
+                hover-class="phonetic-hover"
+                hover-stay-time="80"
+                data-accent="us"
+                catchtap="playAudio"
+              >
+                <text class="phonetic-tag">美</text>
+                <text class="phonetic-text">{{current.phoneticUs}}</text>
+              </view>
+            </view>
+
+            <view class="meaning-box" wx:if="{{flipped}}">
+              <text class="meaning">{{current.meaning}}</text>
+              <text class="example" wx:if="{{current.example}}">{{current.example}}</text>
+              <text class="example-cn" wx:if="{{current.exampleCn}}">{{current.exampleCn}}</text>
+            </view>
+            <text class="card-tip" wx:else>点击卡片查看释义 · 点音标听发音</text>
+          </view>
+        </view>
+
+        <view class="card-actions">
+          <button class="answer-button unknown" hover-class="unknown-hover" bindtap="markUnknown">
+            <text class="unknown-text">不认识</text>
+          </button>
+          <button class="answer-button known" hover-class="known-hover" bindtap="markKnown">
+            <text class="known-text">认识</text>
+          </button>
+        </view>
+
+        <view class="skip-link" hover-class="tap-hover" hover-stay-time="80" bindtap="skip">
+          <text>下一张 ›</text>
+        </view>
+      </block>
+
+      <!-- 四选一 -->
+      <block wx:else>
+        <view class="quiz-head">
+          <text class="word">{{current.word}}</text>
+
+          <view class="phonetic-row">
+            <view
+              class="phonetic-item"
+              hover-class="phonetic-hover"
+              hover-stay-time="80"
+              data-accent="uk"
+              catchtap="playAudio"
+            >
+              <text class="phonetic-tag">英</text>
+              <text class="phonetic-text">{{current.phoneticUk}}</text>
+            </view>
+            <view
+              class="phonetic-item"
+              hover-class="phonetic-hover"
+              hover-stay-time="80"
+              data-accent="us"
+              catchtap="playAudio"
+            >
+              <text class="phonetic-tag">美</text>
+              <text class="phonetic-text">{{current.phoneticUs}}</text>
+            </view>
+          </view>
+
+          <text class="quiz-tip">选出正确的中文释义</text>
+        </view>
+
+        <view class="option-list">
+          <view
+            class="option {{selectedKey === item.key ? 'is-selected' : ''}} {{answered && item.correct ? 'is-right' : ''}} {{answered && selectedKey === item.key && !item.correct ? 'is-wrong' : ''}}"
+            wx:for="{{options}}"
+            wx:key="key"
+            data-key="{{item.key}}"
+            hover-class="option-hover"
+            hover-stay-time="80"
+            bindtap="chooseOption"
+          >
+            <text class="option-text {{answered && item.correct ? 'is-right-text' : ''}} {{answered && selectedKey === item.key && !item.correct ? 'is-wrong-text' : ''}}">{{item.meaning}}</text>
+          </view>
+        </view>
+
+        <view class="feedback" wx:if="{{answered}}">
+          <text class="feedback-text">{{feedbackText}}</text>
+        </view>
+
+        <button
+          class="next-button {{answered ? '' : 'is-disabled'}}"
+          hover-class="next-hover"
+          hover-stay-time="80"
+          disabled="{{!answered}}"
+          bindtap="nextQuestion"
+        >
+          <text class="next-text">下一题</text>
+        </button>
+      </block>
+    </view>
+  </scroll-view>
+</view>

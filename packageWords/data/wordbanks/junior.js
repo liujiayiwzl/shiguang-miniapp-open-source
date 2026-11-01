@@ -1,0 +1,3 @@
+// 开源演示词库：仅含 12 条手工整理的示例词条。
+// 正式生产词库未随开源包发布；请阅读 THIRD_PARTY_NOTICES.md。
+module.exports = "apple|ˈæpəl|ˈæpəl|n. 苹果|an apple a day|每天一个苹果\nbook|bʊk|bʊk|n. 书|read a book|读一本书\nschool|skuːl|skuːl|n. 学校|go to school|去上学\nhappy|ˈhæpi|ˈhæpi|a. 快乐的|a happy day|快乐的一天\nwater|ˈwɔːtə|ˈwɔːtər|n. 水|drink water|喝水\nfriend|frend|frend|n. 朋友|a good friend|一个好朋友\nlearn|lɜːn|lɜːrn|v. 学习|learn English|学习英语\nfamily|ˈfæməli|ˈfæməli|n. 家庭|my family|我的家人\npicture|ˈpɪktʃə|ˈpɪktʃər|n. 图片|draw a picture|画一张画\ngarden|ˈgɑːdən|ˈgɑːrdən|n. 花园|a green garden|绿色花园\nmorning|ˈmɔːnɪŋ|ˈmɔːrnɪŋ|n. 早晨|good morning|早上好\ntravel|ˈtrævəl|ˈtrævəl|v. 旅行|travel abroad|出国旅行"

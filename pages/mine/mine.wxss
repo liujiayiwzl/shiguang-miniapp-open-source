@@ -1,0 +1,133 @@
+page {
+  background: #fbfaf7;
+  color: #433f38;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Skyline 没有全局滚动，页面内容都放在 scroll-view 里 */
+.page-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.page {
+  box-sizing: border-box;
+  padding: 46rpx 36rpx 60rpx;
+}
+
+.header {
+  margin-bottom: 34rpx;
+}
+
+.brand {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 650;
+  letter-spacing: 4rpx;
+}
+
+.tagline {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #92887c;
+}
+
+/* 学习数据 */
+.stats-card {
+  padding: 30rpx 32rpx;
+  background: #f2e9db;
+  border-radius: 30rpx;
+  box-shadow: 0 12rpx 36rpx rgba(75, 57, 38, 0.06);
+}
+
+.stats-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-title {
+  font-size: 23rpx;
+  letter-spacing: 1rpx;
+  color: #9a876e;
+}
+
+.stats-badge {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 20rpx;
+  color: #8a7458;
+}
+
+.stats-row {
+  display: flex;
+  margin-top: 30rpx;
+}
+
+.stats-cell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-num {
+  font-size: 42rpx;
+  font-weight: 650;
+  line-height: 1.2;
+  color: #5a4d3f;
+}
+
+.stats-label {
+  margin-top: 10rpx;
+  font-size: 21rpx;
+  color: #8a7458;
+}
+
+/* 入口列表 */
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+  margin-top: 34rpx;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 30rpx;
+  background: #f6f2ea;
+  border-radius: 20rpx;
+}
+
+.entry.entry-hover {
+  background: #efe8dc;
+}
+
+.entry-label {
+  font-size: 27rpx;
+  color: #4c4136;
+}
+
+.entry-go {
+  font-size: 28rpx;
+  color: #b1aaa1;
+}
+
+.footnote {
+  display: block;
+  margin-top: 28rpx;
+  text-align: center;
+  font-size: 21rpx;
+  color: #b1aaa1;
+}
